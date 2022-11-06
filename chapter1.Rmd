@@ -3,12 +3,12 @@
 
 *Write a short description about the course and add a link to your GitHub repository here. This is an R Markdown (.Rmd) file so you should use R Markdown syntax.*
 
-```{r}
-# This is a so-called "R chunk" where you can write R code.
 
-3-2
-
-
-```
 The text continues here.
 
+I just solved the problem of uploading Rstudio to Github before writing chapter 1, thanks to the help of my classmate, I'm very happy to have solved this trouble!
+
+I'm really looking forward to this course, after having studied QSR I'm really looking forward to continuing my in-depth study of R and analytics, and I also really like Kimmo's course, so I've chosen this course.
+
+The R for Health Data Science book was something I had already come across in the QSR and the second time through I was able to get to grips with some of the necessary commands in R. The parts that were difficult to understand before were now understandable and this was a very necessary process.
+The link: https://github.com/YuRenn/IODS-project
