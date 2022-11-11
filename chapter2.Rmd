@@ -21,11 +21,12 @@ learning2014 <- read.table("https://raw.githubusercontent.com/KimmoVehkalahti/He
 
 2. Show a graphical overview of the data and show summaries of the variables in the data. 
 ```{r}
+View(learning2014)
 dim(learning2014)
 str(learning2014)
 ```
-This dataset is from international survey of Approaches to Learning, made possible by Teachers' Academy funding for KV in 2013-2015.
-Before data wrangling, the dataset has 183 observations and 60 variables.
+This data set is from international survey of Approaches to Learning, made possible by Teachers' Academy funding for KV in 2013-2015.
+Before data wrangling, the data set has 183 observations and 60 variables.
 Then I did a data wrangling, and choose the variable of attitude, which is a sum of 10 questions related to students attitude towards statistics. In the dataset of learning2014, it has 166 observations and 7 variables, they are gender, age,attitude(Global attitude toward statistics), deep(deep learning), stra(strategical learning), surf(surface learning), and points(exam points).
 
 
