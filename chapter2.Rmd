@@ -30,7 +30,7 @@ Then I did a data wrangling, and choose the variable of attitude, which is a sum
 
 
 3.Choose three variables as explanatory variables and fit a regression model where exam points is the target (dependent, outcome) variable.
-3.1First, visualize the dataset and create a plot matrix with ggpairs()
+3.1First, visualize the data set and create a plot matrix with ggpairs()
 ```{r}
 library(GGally)
 library(ggplot2)
