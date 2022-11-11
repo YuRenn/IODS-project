@@ -1,13 +1,68 @@
-# Insert chapter 2 title here
+---
+title: "Introduction to Open Data Science 2022, Assignment 2"
+
+author: "Yu Ren"
+date: "2022-11-10"
+output: html_document
+---
 
 *Describe the work you have done this week and summarize your learning.*
+Data wrangling and analysis
 
 - Describe your work and results clearly. 
 - Assume the reader has an introductory course level understanding of writing and reading R code as well as statistical methods.
 - Assume the reader has no previous knowledge of your data or the more advanced methods you are using.
 
+1.read dateset
 ```{r}
-date()
+learning2014 <- read.table("https://raw.githubusercontent.com/KimmoVehkalahti/Helsinki-Open-Data-Science/master/datasets/learning2014.txt",
+                            sep = ",", header = T)
 ```
 
-Here we go again...
+2. Show a graphical overview of the data and show summaries of the variables in the data. 
+```{r}
+dim(learning2014)
+str(learning2014)
+```
+This dataset is from international survey of Approaches to Learning, made possible by Teachers' Academy funding for KV in 2013-2015.
+Before data wrangling, the dataset has 183 observations and 60 variables.
+Then I did a data wrangling, and choose the variable of attitude, which is a sum of 10 questions related to students attitude towards statistics. In the dataset of learning2014, it has 166 observations and 7 variables, they are gender, age,attitude(Global attitude toward statistics), deep(deep learning), stra(strategical learning), surf(surface learning), and points(exam points).
+
+
+3.Choose three variables as explanatory variables and fit a regression model where exam points is the target (dependent, outcome) variable.
+3.1First, visualize the dataset and create a plot matrix with ggpairs()
+```{r}
+library(GGally)
+library(ggplot2)
+ggpairs(learning2014, lower = list(combo = wrap("facethist", bins = 20)))
+```
+
+3.2Choose attitude, points and surf as variables and fit a regression model
+```{r}
+fit1 <- learning2014 %>%
+  lm(points ~ attitude + surf, data = .)
+summary(fit1)
+
+```
+The result shows that expect surf, the p-values for the other variables are both significant and predictive. adjust R-squared shows that the model explains 18.54%.
+
+3.3 remove the variable of surf, and fit the model again.
+```{r}
+fit2 <- learning2014 %>%
+  lm(points ~ attitude, data = .)
+summary(fit2)
+```
+There is a strong correlation between the two variables and the model is a valid model. Adjusted R-squared indicates that the model can explain 18.54 of the variance, which is only 0.01% higher than fit1. A coefficient of 3.53 for attitude means that for every 1 increase in attitude, the test points will increase by 3.53.
+
+4.Model diagnostic
+
+```{r}
+library(ggfortify)
+autoplot(fit2)
+```
+The Residuals vs fitted plot shows the data distributed up and down along the blue line with no clear trend, indicating a linear relationship.
+
+
+
+
+
