@@ -1,4 +1,18 @@
+---
+author: "Yu Ren"
+date: "02.11.2022"
 
+output: 
+  html_document:
+    theme: flatly
+    highlight: haddock
+    toc: true
+    toc_depth: 2
+    number_section: false
+---
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
 # About the project
 
 *Write a short description about the course and add a link to your GitHub repository here. This is an R Markdown (.Rmd) file so you should use R Markdown syntax.*
