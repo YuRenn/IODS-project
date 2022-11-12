@@ -40,9 +40,9 @@ ggpairs(learning2014, lower = list(combo = wrap("facethist", bins = 20)))
 
 3.2Choose attitude, points and surf as variables and fit a regression model
 ```{r}
-fit1 <- learning2014 %>%
+fit <- learning2014 %>%
   lm(points ~ attitude + surf, data = .)
-summary(fit1)
+summary(fit)
 
 ```
 The result shows that expect surf, the p-values for the other variables are both significant and predictive. adjust R-squared shows that the model explains 18.54%.
