@@ -88,7 +88,7 @@ p3 <- alc %>%
   
 p3
 ```
-famrel - quality of family relationships (numeric: from 1 - very bad to 5 - excellent)
+"famrel - quality of family relationships (numeric: from 1 - very bad to 5 - excellent)"
 Family relationships start at level 3, with better family relationships being accompanied by a lower proportion of alcohol consumption. The highest proportion of alcohol consumption is found when family relationships are poor.
 
 3.4explore alcohol high use and absences
@@ -171,7 +171,7 @@ loss_func <- function(class, prob) {
 training.error.full <- loss_func(alc$high_use, alc$probability)
 training.error.full
 ```
-Prediction error rate of 23.5%
+Prediction error rate of 23.5%.
 
 
 
