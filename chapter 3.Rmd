@@ -26,7 +26,167 @@ alc <- read_csv("alc.csv")
 glimpse(alc)
 ```
 
-this dateset....
+The dataset has 370 observations and 35 variables. I will explain some meanings of variables:
+famsize-family size; Pstatus - parent's cohabitation status; Medu - mother's education; Fedu - father's education; Mjob - mother's job; Fjob - father's job; reason - reason to choose this school; guardian - student's guardian; schoolsup - extra educational support; famsup - family educational support; activities - extra-curricular activities; nursery - attended nursery school; higher - wants to take higher education; internet - Internet access at home; romantic - with a romantic relationship;  famrel - quality of family relationships; freetime - free time after school; goout - going out with friends; Dalc - workday alcohol consumption; Walc - weekend alcohol consumption; health - current health status; absences - number of school absences; G1 - first period grade; G2 - second period grade; G3 - final grade.
+
+2. Choose 4 variables and present personal hypothesis
+The four variables I have chosen are goout - going out with friends, freetime - free time after school，famrel - quality of family relationships and absences - number of school absences.
+I suspect that these four variables would be related to student drinking; having free time after school and going out with friends multiple times may increase the frequency of drinking, the quality of family relationships may also influence drinking status, and there may be a relationship between absence from class and drinking.
+
+3.Explore the distributions of variables and their relationships with alcohol consumption
+```{r}
+alc %>% group_by(freetime) %>% summarise(count = n())
+alc %>% group_by(goout) %>% summarise(count = n())
+alc %>% group_by(famrel) %>% summarise(count = n())
+alc %>% group_by(absences) %>% summarise(count = n())
+```
+The distribution of the freetime and goout variables is more in the middle, with the family relationship variables mostly distributed between 3 and 5, indicating that the majority of students have good family relationships; classroom absences, the majority of students are absent 5 times or less.
+
+3.1 explore alcohol high use and freetime
+```{r}
+p1 <- alc %>%
+  ggplot(aes(x = freetime, fill = high_use)) +
+  geom_bar(position = "fill", color ="white") +
+  labs(x = "free time after school", y = "alcohol high-user",
+       title = "Proportion of alcohol high-use by freetime")+
+  theme(legend.position = "bottom")+
+  scale_fill_discrete(labels = c("FALSE" = "Non-high-user", 
+                                 "TRUE" = "high-user"))+
+  scale_fill_brewer(palette = "")
+  
+p1
+```
+According to the proportions shown in the bar chart, the proportion of alcohol use increases gradually as leisure time after school increases.
+
+3.2 explore alcohol high use and goout
+```{r}
+p2 <- alc %>%
+  ggplot(aes(x = goout, fill = high_use)) +
+  geom_bar(position = "fill", color ="white") +
+  labs(x = "going out with friends", y = "alcohol high-user",
+       title = "Proportion of alcohol high-use by goout")+
+  theme(legend.position = "bottom")+
+  scale_fill_discrete(labels = c("FALSE" = "Non-high-user", 
+                                 "TRUE" = "high-user"))+
+  scale_fill_brewer(palette = "")
+  
+p2
+```
+According to the bar scale, the proportion of alcohol consumption increases as the number of outings with friends increases, particularly at level 4 of the outing degree, where the proportion increases substantially.
+
+3.3explore alcohol high use and famrel
+```{r}
+p3 <- alc %>%
+  ggplot(aes(x = famrel, fill = high_use)) +
+  geom_bar(position = "fill", color ="white") +
+  labs(x = "quality of family relationships", y = "alcohol high-user",
+       title = "Proportion of alcohol high-use by family relationship")+
+  theme(legend.position = "bottom")+
+  scale_fill_discrete(labels = c("FALSE" = "Non-high-user", 
+                                 "TRUE" = "high-user"))+
+  scale_fill_brewer(palette = "")
+  
+p3
+```
+famrel - quality of family relationships (numeric: from 1 - very bad to 5 - excellent)
+Family relationships start at level 3, with better family relationships being accompanied by a lower proportion of alcohol consumption. The highest proportion of alcohol consumption is found when family relationships are poor.
+
+3.4explore alcohol high use and absences
+```{r}
+p4 <- alc %>%
+  ggplot(aes(x = absences, fill = high_use)) +
+  geom_bar(position = "fill", color ="white") +
+  labs(x = " number of school absences (numeric: from 0 to 93)", y = "alcohol high-user",
+       title = "Proportion of alcohol high-use by number of school absences")+
+  theme(legend.position = "bottom")+
+  scale_fill_discrete(labels = c("FALSE" = "Non-high-user", 
+                                 "TRUE" = "high-user"))+
+  scale_fill_brewer(palette = "")
+  
+p4
+```
+As the number of absences from school increases, the proportion of alcohol consumption increases with it.
+The bars show much the same results as I expected, the only differences being family relationships and alcohol consumption rates, with the worst families not having the highest rates of alcohol consumption and the second worst families having the highest rates of alcohol consumption.
+
+4.logistic regression model
+4.1
+```{r}
+m1 <- glm(high_use ~ freetime + goout + famrel + absences, data = alc, family = "binomial")
+
+summary(m1)
+```
+4.2 From coefficients to odds ratios
+```{r}
+m1 <- glm(high_use ~ freetime + goout + famrel + absences, data = alc, family = "binomial")
+
+# compute odds ratios (OR)
+OR <- coef(m1) %>% exp
+OR
+# compute confidence intervals (CI)
+confint(m1)
+CI <- exp(confint(m1))
+CI
+
+# print out the odds ratios with their confidence intervals
+cbind(OR, CI)
+```
+According to the model, the probability of drinking increases 1.26 times for every doubling of free time, 2.03 times for more frequent outings with friends, 0.67 times for every unit of improvement in family relations, and 1.08 times for every increase in absenteeism from school.
+
+5. Explore the predictive power of the model
+5.1 Binary predictions（1）
+```{r}
+prob <- predict(m1, type = "response")
+library(dplyr)
+
+alc <- mutate(alc, probability = prob)
+alc <- mutate(alc, prediction = probability > 0.5)
+
+table(high_use = alc$high_use, prediction = alc$prediction)
+```
+
+5.2 Binary predictions (2)
+```{r}
+library(dplyr); library(ggplot2)
+
+# initialize a plot of 'high_use' versus 'probabilities' in 'alc'
+g <- ggplot(alc, aes(x = probability, y = high_use))
+
+# define the geom as points and draw the plot
+g+aes(color = prediction, shape = prediction) + geom_point()
+
+# tabulate the target variable versus the predictions
+table(high_use = alc$high_use, prediction = alc$prediction)
+
+```
+6.Bonus
+```{r}
+# define a loss function (mean prediction error)
+loss_func <- function(class, prob) {
+  n_wrong <- abs(class - prob) > 0.5
+  mean(n_wrong)
+}
+```
+
+```{r}
+training.error.full <- loss_func(alc$high_use, alc$probability)
+training.error.full
+```
+Prediction error rate of 23.5%
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
