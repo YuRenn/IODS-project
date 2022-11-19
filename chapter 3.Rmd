@@ -115,7 +115,7 @@ m1 <- glm(high_use ~ freetime + goout + famrel + absences, data = alc, family = 
 
 summary(m1)
 ```
-There is a highly significant relationship between the proportion of increased drinking and family relationships, the frequency of going out with friends and absence from class, but a non-significant p-value between this and free time.
+There is a highly significant relationship between the proportion of increased drinking and family relationships, the frequency of going out with friends and absence from class, but a non-significant p-value between this and free time. 
 
 4.2 From coefficients to odds ratios
 ```{r}
@@ -161,7 +161,7 @@ g+aes(color = prediction, shape = prediction) + geom_point()
 table(high_use = alc$high_use, prediction = alc$prediction)
 
 ```
-6.Bonus
+6.Bonus 
 ```{r}
 # define a loss function (mean prediction error)
 loss_func <- function(class, prob) {
