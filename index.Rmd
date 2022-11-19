@@ -27,8 +27,7 @@ output:
 
 ***
 
-```{r}
-```{r child = "chapter 3.Rmd"}
+```{r}{r child = "chapter 3.Rmd"}
 # This will include Chapter 3 (that is updated in its own file) in the document.
 ```
 ```

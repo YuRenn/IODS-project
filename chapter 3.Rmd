@@ -91,7 +91,7 @@ p3
 "famrel - quality of family relationships (numeric: from 1 - very bad to 5 - excellent)"
 Family relationships start at level 3, with better family relationships being accompanied by a lower proportion of alcohol consumption. The highest proportion of alcohol consumption is found when family relationships are poor.
 
-3.4explore alcohol high use and absences
+3.4 explore alcohol high use and absences
 ```{r}
 p4 <- alc %>%
   ggplot(aes(x = absences, fill = high_use)) +
@@ -115,6 +115,8 @@ m1 <- glm(high_use ~ freetime + goout + famrel + absences, data = alc, family = 
 
 summary(m1)
 ```
+There is a highly significant relationship between the proportion of increased drinking and family relationships, the frequency of going out with friends and absence from class, but a non-significant p-value between this and free time.
+
 4.2 From coefficients to odds ratios
 ```{r}
 m1 <- glm(high_use ~ freetime + goout + famrel + absences, data = alc, family = "binomial")
@@ -143,6 +145,7 @@ alc <- mutate(alc, prediction = probability > 0.5)
 
 table(high_use = alc$high_use, prediction = alc$prediction)
 ```
+Of the 370 participants, there are 259 non-alcoholics, of which the model correctly predicted 239 (92.28%); of the 111 alcoholics, the model successfully predicted 44 (39.64%).
 
 5.2 Binary predictions (2)
 ```{r}
@@ -171,7 +174,7 @@ loss_func <- function(class, prob) {
 training.error.full <- loss_func(alc$high_use, alc$probability)
 training.error.full
 ```
-Prediction error rate of 23.5%.
+Prediction error rate of 23.51%.
 
 
 
