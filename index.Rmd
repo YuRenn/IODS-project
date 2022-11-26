@@ -1,14 +1,19 @@
 ---
 title: "IODS course project"
-author: "Yu  Ren"
+author: "Yu Ren"
 output:
   html_document:
-    theme: cosmo
-    toc: true
-    toc_depth: 2
-    fig_caption: true
-    fig_width: 6
-    fig_height: 4
+    fig_caption: yes
+    theme: flatly
+    highlight: haddock
+    toc: yes
+    toc_depth: 3
+    toc_float: yes
+    number_section: no
+  pdf_document:
+    toc: yes
+    toc_depth: '3'
+bibliography: citations.bib
 ---
 
 ***
@@ -19,33 +24,25 @@ output:
 # This will include Chapter 1 (that is updated in its own file) in the document.
 ```
   
+
 ***
   
-```{r child = "chapter2.Rmd"}
+```{r child = "chapter2.Rmd", warning = F, message = F}
 # This will include Chapter 2 (that is updated in its own file) in the document.
 ```
 
 ***
 
-```{r child = "chapter 3.Rmd"}
+```{r child = "chapter3.Rmd", warning = F, message = F}
 # This will include Chapter 3 (that is updated in its own file) in the document.
-
 ```
 
 ***
-
-```{r child = "chapter4.Rmd"}
+```{r child = "chapter4.Rmd", warning = F, message = F}
 # This will include Chapter 4 (that is updated in its own file) in the document.
-
-```
 ```
 
-
-
-
-
-```
-
+***
 
 (more chapters to be added similarly as we proceed with the course!)
 

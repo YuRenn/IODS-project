@@ -1,7 +1,7 @@
 ---
-title: "chapter 4"
+title: "chapter 4——Clustering and classification"
 author: "Yu Ren"
-date: "2022-11-16"
+date: "23.11.2022"
 
 output: 
   html_document:
@@ -11,9 +11,6 @@ output:
     toc_depth: 2
     number_section: false
 ---
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE) 
-```
 
 1. Load the Boston data from the MASS package
 ```{r}
@@ -33,6 +30,7 @@ str(Boston)
 dim(Boston)
 ```
 This dataset has 506 observations and 14 variables. And the variable crim = per capita crime rate by town; zn = proportion of residential land zoned for lots over 25,000 sq.ft; indus = proportion of non-retail business acres per town; chas = Charles River dummy variable (= 1 if tract bounds river; 0 otherwise); nox = nitrogen oxides concentration (parts per 10 million); rm = average number of rooms per dwelling; dis = weighted mean of distances to five Boston employment centres; rad = index of accessibility to radial highways; tax = full-value property-tax rate per \$10,000; ptratio = pupil-teacher ratio by town; black = 1000(Bk - 0.63)^2 where Bk is the proportion of blacks by town; lstat = lower status of the population (percent); medv = median value of owner-occupied homes in \$1000s.
+
 2.Show a graphical overview of the data and show summaries of the variables in the data.
 ```{r}
 # plot matrix of the variables
@@ -71,6 +69,8 @@ class(boston_scaled)
 boston_scaled <- as.data.frame(boston_scaled)
 boston_scaled
 ```
+
+
 ```{r}
 boston_scaled <- as.data.frame(scale(Boston))
 boston_scaled$crim <- as.numeric(boston_scaled$crim)
@@ -125,7 +125,7 @@ nrow(test)
 lda.fit <- lda(crime ~., data = train)
 
 # print the lda.fit object
-lda.fit
+lda.fit 
 ```
 
 5. Save the crime categories from the test set and then remove the categorical crime variable from the test dataset. Then predict the classes with the LDA model on the test data.
@@ -148,7 +148,7 @@ plot(lda.fit, dimen = 2)
 lda.arrows(lda.fit, myscale = 1)
 ```
 In this graph, the clustering of crime levels can be clearly seen, with low and medium_low crime rates concentrated in the top left and middle left; medium_high and high crime rates are concentrated in the bottom left and right. The concentration of low crime is much greater, and there is a very clear demarcation line between high crime on the right and the left.
-In the red part of the graph, rad(index of accessibility to radial highway) is associated with high crime rates and zn(proportion of residential land zoned for lots over 25,000 sq.ft) is closely related to low crime rates.
+In the red part of the graph, rad(index of accessibility to radial highway) is associated with high crime rates and zn(proportion of residential land zoned for lots over 25,000 sq.ft) is closely related to low crime rates.   
 
 ```{r}
 # predict classes with test data
@@ -205,6 +205,6 @@ km <- kmeans(Boston, centers = 2)
 # plot the Boston dataset with clusters
 pairs(Boston, col = km$cluster)
 ```
-The optimal number of clusters can be found by looking at the sum of squares within clusters, and in the graph above I think the optimal number of clusters is close to 2. At an optimal cluster number of 2, the values vary significantly.
+The optimal number of clusters can be found by looking at the sum of squares within clusters, and in the graph above I think the optimal number of clusters is close to 2. At an optimal cluster number of 2, the values vary significantly. 
 
 
