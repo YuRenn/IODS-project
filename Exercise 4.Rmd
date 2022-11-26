@@ -537,7 +537,7 @@ Hints:
 set.seed(123)
 
 # determine the number of clusters
-k_max <- "change me!"
+k_max <- 10
 
 # calculate the total within sum of squares
 twcss <- sapply(1:k_max, function(k){kmeans(Boston, k)$tot.withinss})
@@ -546,7 +546,7 @@ twcss <- sapply(1:k_max, function(k){kmeans(Boston, k)$tot.withinss})
 qplot(x = 1:k_max, y = twcss, geom = 'line')
 
 # k-means clustering
-km <- kmeans(Boston, centers = "change me!")
+km <- kmeans(Boston, centers = 2)
 
 # plot the Boston dataset with clusters
 pairs(Boston, col = km$cluster)
