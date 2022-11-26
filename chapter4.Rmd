@@ -164,7 +164,7 @@ predictions <- lda.pred$class
 ```{r}
 library(MASS)
 #reload the Boston dataset and standardize the detaset
-data("Boston")
+data("Boston") 
 boston_scaled <- as.data.frame(scale(Boston))
 
 #calculate the distances between the observations
