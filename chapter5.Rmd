@@ -15,4 +15,35 @@ output:
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
+Prepare some package
+```{r}
+library(dplyr)
+library(tidyverse)
+```
+
+Read data
+```{r}
+human_5 <- read.table("https://raw.githubusercontent.com/KimmoVehkalahti/Helsinki-Open-Data-Science/master/datasets/human1.txt",
+                        sep=",", header = T)
+```
+
+```{r}
+# look at the (column) names of human
+names(human_5)
+
+# look at the structure of human
+str(human_5)
+
+# print out summaries of the variables
+summary(human_5)
+```
+
+
+
+
+
+
+
+
+
 

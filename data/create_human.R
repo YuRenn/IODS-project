@@ -5,6 +5,7 @@
 #Date: "26.11.2022"
 #read datasets
 library(tidyverse)
+
 hd <- read_csv("https://raw.githubusercontent.com/KimmoVehkalahti/Helsinki-Open-Data-Science/master/datasets/human_development.csv")
 gii <- read_csv("https://raw.githubusercontent.com/KimmoVehkalahti/Helsinki-Open-Data-Science/master/datasets/gender_inequality.csv", na = "..")
 
@@ -21,73 +22,80 @@ summary(gii)
 #rename the variables
 library(tidyselect)
 
-hd <- hd%>%
-  rename(hdir = "HDI rank",
-         hdi = "Human Development Index (HDI)",
-         lifeexp = "life expectancy at birty",
-         edumean = "expected years of education",
-         gni = "gross national income per capita",
-         g_h = "gni per capota rank minus HDI rank")
+hd <- hd %>% 
+  rename(hdi.rank = `HDI Rank`,
+         hdi = `Human Development Index (HDI)`,
+         life.exp = `Life Expectancy at Birth`,
+         edu.exp = `Expected Years of Education`,
+         edu.mean = `Mean Years of Education`,
+         gni = `Gross National Income (GNI) per Capita`,
+         gni_hdi = `GNI per Capita Rank Minus HDI Rank`)
 
-gii <- gii%>%
-  rename(giir = "GII Rank",
-         gii = "gender inequality index",
-         maternaldr = "Maternal Mortality Ratio",
-         teenbr = "adolescent bith rate",
-         prp = "percent representation in parliament",
-         edu2F = "Population with Secondary Education (Female)",
-         edu2M = "Population with Secondary Education (Male)",
-         workrF = "Labour Force Participation Rate (Female)",
-         workM = "Labour Force Participation Rate (Male)")
+#check the names
+colnames(hd)
+
+gii <- gii %>% 
+  rename(gii.rank = `GII Rank`,
+         gii = `Gender Inequality Index (GII)`,
+         maternal.mortality.ratio = `Maternal Mortality Ratio`,
+         teen.birth = `Adolescent Birth Rate`,
+         per.pa = `Percent Representation in Parliament`,
+         edu.f = `Population with Secondary Education (Female)`,
+         edu.m = `Population with Secondary Education (Male)`,
+         labour.f = `Labour Force Participation Rate (Female)`,
+         labour.m = `Labour Force Participation Rate (Male)`)
+#check the name
+colnames(gii)
 
 #Mutate the “Gender inequality” data and create two new variables.
-gii <- gii%>%
-  mutate(Edu2.FM = Edu2.F / Edu2.M,
-         Labo.FM = Labo2.F / Labo2.M)
+gii <- gii %>% 
+  mutate("edu_fm" = edu.f/edu.m,
+         "labour_fm" = labour.f/labour.m)
 
 #join 2 datesets
 human <- inner_join(hd, gii, by = "Country")
 human %>% head
 
-write_csv(alc, "data/alc.csv")
+
+
+write_csv(human, "data/human.csv")
 
 
 
 
 #***********Assignment 5: Data Wrangling***************
-human_5 <- read.table("https://raw.githubusercontent.com/KimmoVehkalahti/Helsinki-Open-Data-Science/master/datasets/human1.txt",
-                        sep=",", header = T)
 
-str(human_5); dim(human_5)
+str(human); dim(human)
 #The dataset has 195 observations and 19 variables.
 
 library(stringr)
 library(dplyr)
+
 #check the structure of GNI
-str(human$`Gross National Income (GNI) per Capita`)
+str(human$gni)
 
 #transform the GNI variable to numeric
-human_5$GNI <- str_replace(human$`Gross National Income (GNI) per Capita`, pattern = ",", replace = "") %>%
+human$gni <- str_replace(human$gni, pattern = ",", replace = "") %>%
   as.numeric()
 
 #exclude unneeded variables
-keep <- c("Country", "Edu2.FM", "Labo.FM", "Edu.Exp", "Life.Exp", "GNI", "Mat.Mor", "Ado.Birth", "Parli.F")
-human_5 <- dplyr::select(human_new, one_of(keep))
+keep <- c("Country", "edu_fm", "labour_fm", "edu.exp", "life.exp", "gni", "maternal.mortality.ratio", "teen.birth", "per.pa")
+human <- dplyr::select(human, one_of(keep))
 
 #Remove all rows with missing values 
-human_5 <- filter(human_5, complete.cases(human_5))
+human <- filter(human, complete.cases(human))
 
 #Remove the observations which relate to regions instead of countries.
-last <- nrow(human_5) - 7
-human_5 <- human_5[1:last, ]
+last <- nrow(human) - 7
+human <- human[1:last, ]
 
 #Define the row names of the data by the country names and remove the country name column from the data.
 #remove the country name column from the data
-rownames(human_5) <- human_5$Country
-keep <- c("Edu2.FM", "Labo.FM", "Edu.Exp", "Life.Exp", "GNI", "Mat.Mor", "Ado.Birth", "Parli.F")
-human_5 <- dplyr::select(human_5, keep)
+rownames(human) <- human$Country
+keep <- c("edu_fm", "labour_fm", "edu.exp", "life.exp", "gni", "maternal.mortality.ratio", "teen.birth", "per.pa")
+human <- dplyr::select(human, keep)
 
-write.table(human_new, "human.txt", append = FALSE, sep = ",", dec = ".",
+write.table(human, "human.txt", append = FALSE, sep = ",", dec = ".",
             row.names = TRUE, col.names = TRUE)
 
 
