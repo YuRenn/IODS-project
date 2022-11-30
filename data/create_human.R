@@ -19,6 +19,8 @@ summary(hd)
 summary(gii)
 
 #rename the variables
+library(tidyselect)
+
 hd <- hd%>%
   rename(hdir = "HDI rank",
          hdi = "Human Development Index (HDI)",
@@ -52,8 +54,41 @@ write_csv(alc, "data/alc.csv")
 
 
 
+#***********Assignment 5: Data Wrangling***************
+human_5 <- read.table("https://raw.githubusercontent.com/KimmoVehkalahti/Helsinki-Open-Data-Science/master/datasets/human1.txt",
+                        sep=",", header = T)
 
+str(human_5); dim(human_5)
+#The dataset has 195 observations and 19 variables.
 
+library(stringr)
+library(dplyr)
+#check the structure of GNI
+str(human$`Gross National Income (GNI) per Capita`)
+
+#transform the GNI variable to numeric
+human_5$GNI <- str_replace(human$`Gross National Income (GNI) per Capita`, pattern = ",", replace = "") %>%
+  as.numeric()
+
+#exclude unneeded variables
+keep <- c("Country", "Edu2.FM", "Labo.FM", "Edu.Exp", "Life.Exp", "GNI", "Mat.Mor", "Ado.Birth", "Parli.F")
+human_5 <- dplyr::select(human_new, one_of(keep))
+
+#Remove all rows with missing values 
+human_5 <- filter(human_5, complete.cases(human_5))
+
+#Remove the observations which relate to regions instead of countries.
+last <- nrow(human_5) - 7
+human_5 <- human_5[1:last, ]
+
+#Define the row names of the data by the country names and remove the country name column from the data.
+#remove the country name column from the data
+rownames(human_5) <- human_5$Country
+keep <- c("Edu2.FM", "Labo.FM", "Edu.Exp", "Life.Exp", "GNI", "Mat.Mor", "Ado.Birth", "Parli.F")
+human_5 <- dplyr::select(human_5, keep)
+
+write.table(human_new, "human.txt", append = FALSE, sep = ",", dec = ".",
+            row.names = TRUE, col.names = TRUE)
 
 
 
