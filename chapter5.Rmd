@@ -19,25 +19,133 @@ Prepare some package
 ```{r}
 library(dplyr)
 library(tidyverse)
+library(GGally)
 ```
 
 Read data
 ```{r}
-human_5 <- read.table("https://raw.githubusercontent.com/KimmoVehkalahti/Helsinki-Open-Data-Science/master/datasets/human1.txt",
-                        sep=",", header = T)
+human <- read.table("human.txt", sep = ",", )
 ```
 
 ```{r}
-# look at the (column) names of human
-names(human_5)
+dim(human)
+```
+The dataset has 155 observations and 8 variables.
 
-# look at the structure of human
-str(human_5)
-
-# print out summaries of the variables
-summary(human_5)
+1. Show a graphical overview of the data and show summaries of the variables in the data.
+```{r}
+ggpairs(human)
+summary(human)
 ```
 
+
+The correlation between the variables can be seen very clearly in the visual charts. Take the variable of the labour market participation of females and males (labour_fm) as an example, there is a strong correlation between it and the percentage of parliamentary representation (per.pa), maternal mortality rate (maternal.mortality.ratio).
+As can be seen from the scatter plot, there appears to be a positive correlation between labour_fm and per.pa and maternal.mortality.ratio.
+
+```{r}
+# Access corrplot
+library(corrplot)
+# compute the correlation matrix and visualize it with corrplot
+cor(human) %>%
+  corrplot(method = "number")
+```
+In a heat map, the degree of correlation and correlations between variables can be seen more visually through the figures.
+
+2-3Perform principal component analysis (PCA) on the raw (non-standardized) human data.
+```{r}
+# standardize the variables
+human_std <- scale(human)
+
+# print out summaries of the standardized variables
+summary(human_std)
+
+# perform principal component analysis (with the SVD method)
+pca_human <- prcomp(human)
+pca_human_std <- prcomp(human_std)
+# print out summaries of the standardized variables
+summary(pca_human_std)
+summary(pca_human)
+```
+```{r}
+# draw a biplot of the principal component representation and the original variables
+biplot(pca_human, 
+       choices = 1:2, 
+       cex = c(0.8, 1), 
+       col = c("grey40", "deeppink2"))
+```
+```{r}
+biplot(pca_human_std, 
+       choices = 1:2, 
+       cex = c(0.8, 1), 
+       col = c("grey40", "deeppink2"))
+```
+4.Give personal interpretations of the first two principal component dimensions based on the biplot drawn after PCA on the standardized human data
+
+In this figure, the countries on the left are more concentrated, with an increase in educational expectations, life expectancy and the level of primary education attained by both men and women in this region, with a number of European or East Asian countries.
+In contrast, the number of women in parliament and the ratio of men to women in the labour market are concentrated at the top of the graph, mostly in the Nordic countries.
+Finally, the high maternal mortality and adolescent birth rates point to the countries on the right, which are mostly African countries.
+
+
+5. Tea data
+```{r}
+#read data
+tea <- read.csv("https://raw.githubusercontent.com/KimmoVehkalahti/Helsinki-Open-Data-Science/master/datasets/tea.csv", stringsAsFactors = TRUE)
+```
+
+```{r}
+#explore the data
+str(tea); dim(tea)
+```
+
+Tea dataset has 300 observations and 36 varibales, and all the variables are categorical.
+```{r}
+#convert all variables to factors
+tea$Tea <- factor(tea$Tea)
+tea$How <- factor(tea$How)
+tea$how <- factor(tea$how)
+tea$sugar <- factor(tea$sugar)
+tea$where <- factor(tea$where)
+tea$lunch <- factor(tea$lunch)
+```
+
+
+```{r}
+library(dplyr)
+library(tidyr)
+# column names to keep in the dataset
+keep_columns <- c("Tea", "How", "how", "sugar", "where", "lunch")
+
+# select the 'keep_columns' to create a new dataset
+tea_time <- select(tea, keep_columns)
+
+# look at the summaries and structure of the data
+summary(tea_time)
+str(tea_time)
+
+# visualize the dataset
+library(ggplot2)
+pivot_longer(tea_time, cols = everything()) %>% 
+  ggplot(aes(value)) + 
+  facet_wrap("name", scales = "free") +
+  geom_bar() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1, size = 8))
+
+```
+In tea dataset, I choose 6 variables, The frequency distribution chart gives a very visual indication of the number of times each of the six variables was answered.
+
+```{r}
+# multiple correspondence analysis
+library(FactoMineR)
+mca <- MCA(tea_time, graph = FALSE)
+
+# summary of the model
+summary(mca)
+
+# visualize MCA
+plot(mca, invisible=c("ind"), graph.type = "classic", habillage = "quali")
+```
+In the Mac factor map, different colours indicate different variables. Red indicates how the tea is drunk, with lemon, milk, other or nothing. Green indicates how the tea is packaged. Pink indicates where the tea was purchased. Yellow indicates whether the tea was consumed before or after lunch. Black indicates the variety of tea. Blue indicates whether or not sugar was added.
+In the map we can observe that Earl Grey tea is usually served with milk and sugar and is usually served at breakfast time; black tea is served with lemon; green tea is usually bought unpackaged from a tea shop and is usually served at breakfast or after lunch.
 
 
 

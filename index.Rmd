@@ -27,8 +27,8 @@ output:
   
 ***
   
-```{r child = "chapter 3.Rmd"}
-# This will include chapter 3 (that is updated in its own file) in the document.
+```{r child = "chapter3.Rmd"}
+# This will include Chapter 3 (that is updated in its own file) in the document.
 ```
   
 ***
@@ -36,7 +36,20 @@ output:
 ```{r child = "chapter4.Rmd"}
 # This will include Chapter 4 (that is updated in its own file) in the document.
 ```
-
   
 ***
+
+```{r}
+xfun::Rscript_call(rmarkdown::render, list("chapter5.Rmd"))
+```
+  
+***
+
+
+
+
+
+
+
+
 
