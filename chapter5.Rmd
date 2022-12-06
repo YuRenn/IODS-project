@@ -147,7 +147,7 @@ summary(mca)
 plot(mca, invisible=c("ind"), graph.type = "classic", habillage = "quali")
 ```
 In the Mac factor map, different colours indicate different variables. Red indicates how the tea is drunk, with lemon, milk, other or nothing. Green indicates how the tea is packaged. Pink indicates where the tea was purchased. Yellow indicates whether the tea was consumed before or after lunch. Black indicates the variety of tea. Blue indicates whether or not sugar was added.
-In the map we can observe that Earl Grey tea is usually served with milk and sugar and is usually served at breakfast time; black tea is served with lemon; green tea is usually bought unpackaged from a tea shop and is usually served at breakfast or after lunch.
+In the map we can observe that Earl Grey tea is usually served with milk and sugar and is usually served at breakfast time; black tea is served with lemon; green tea is usually bought unpackaged from a tea shop and is usually served at breakfast or after lunch. 
 
 
 
