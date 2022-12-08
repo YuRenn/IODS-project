@@ -14,7 +14,7 @@ output:
     toc_depth: 2
     number_section: false
 ---
-
+# Assignment 5: Dimensionality reduction techniques
 Prepare some package
 ```{r}
 library(dplyr)

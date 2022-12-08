@@ -11,7 +11,7 @@ output:
     toc_depth: 2
     number_section: false
 ---
-
+# Assignment 4: Clustering and classification
 1. Load the Boston data from the MASS package
 ```{r}
 library(MASS)

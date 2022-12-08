@@ -5,7 +5,7 @@ author: "Yu Ren"
 date: "2022-11-10"
 output: html_document
 ---
-
+# Assignment2: Regression and model validation
 *Describe the work you have done this week and summarize your learning.*
 Data wrangling and analysis
 

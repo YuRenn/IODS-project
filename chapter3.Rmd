@@ -11,6 +11,8 @@ output:
     toc_depth: 2
     number_section: false
 ---
+# Assignment3: Logistic regression
+
 prepare some packages
 ```{r}
 library(tidyverse)

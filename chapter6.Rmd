@@ -14,6 +14,7 @@ output:
     toc_depth: 2
     number_section: false
 ---
+# Assignment 6 Analysis of Longitudinal data*
 Exercise 1
 In this exercise, I will use the RATS dataset, and implement the analyses of Chapter 8 of MABS.
 Prepare the packages
